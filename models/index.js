@@ -4,7 +4,7 @@ import Role from "./role.js";
 
 const dbInit = async () => {
   try {
-    await sequelize.authenticate();
+     await sequelize.sync({ force: false });
     console.log("Sequelize connected ✅");
     
     // Sync tables (use { force: true } to drop & recreate for dev)
