@@ -99,7 +99,7 @@ import Formrouter from "./routes/formRoutes.js";
 dotenv.config();
 const app = express();
 
-// ✅ Enable CORS
+// Enable CORS
 app.use(
   cors({
     origin: "*",
@@ -108,24 +108,26 @@ app.use(
   })
 );
 
-// ✅ Middleware
+// Middleware
 app.use(express.json());
 
-// ✅ Swagger
+// Swagger docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// ✅ Routes
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/roles", rolesrouter);
 app.use("/api/onboard", onboardRouter);
 app.use("/api/forms", Formrouter);
 
-// ✅ Test route
+// Test route
 app.get("/", (req, res) => res.send("MCP Node.js Sequelize API running 🚀"));
 
-// ✅ Initialize DB
-dbInit();
+// ✅ Initialize DB and start server
+const PORT = process.env.PORT || 5000;
 
-// ❌ REMOVE app.listen()
-// ✅ Instead, export the app for Vercel
-export default app;
+dbInit().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+});
